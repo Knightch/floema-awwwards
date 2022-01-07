@@ -1,6 +1,24 @@
-const webpack = require('webpack')
+const path = require('path')
 
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const {
+    CleanWebpackPlugin
+} = require('clean-webpack-plugin')
 
-const IS_DEVELOPMENT = process.env.NODE_ENV === 'dev'
+const {
+    merge
+} = require('webpack-merge')
+const config = require('./webpack.config')
+
+module.exports = merge(config, {
+    mode: 'production',
+
+    output: {
+        path: path.join(__dirname, 'public')
+
+    },
+
+    plugins: [
+        new CleanWebpackPlugin()
+    ]
+
+})
