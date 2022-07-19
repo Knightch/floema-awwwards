@@ -7,23 +7,40 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const IS_DEVELOPMENT = process.env.NODE_ENV === 'dev'
 
 const dirApp = path.join(__dirname, 'app')
-const dirAssets = path.join(__dirname, 'assets')
+const dirShared = path.join(__dirname, 'shared')
 const dirStyles = path.join(__dirname, 'styles')
 const dirNode = 'node_modules'
 
+// const dirNode = 'node_modules'
+console.log("value of dirApp -" + dirApp, +"value of dirAssets -" + dirShared + "value of dirStyles -" + dirStyles);
+
 module.exports = {
-    entry:[
-        path.join(dirApp,'index.js'),
-        path.join(dirStyles,'index.scss')
+    entry: [
+        path.join(dirApp, 'index.js'),
+        path.join(dirShared, 'index.scss')
     ],
 
-    resolve:{
-        modules:[
+    resolve: {
+        modules: {
             dirApp,
-            dirAssets,
+            dirShared,
             dirStyles,
             dirNode
-        ]
-    }
-    
+        }
+    },
+
+    Plugin: [
+        new webpack.DefinePlugin({
+            IS_DEVELOPMENT
+        }),
+
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: './shared',
+                    to: ''
+                }
+            ]
+        })
+    ]
 }
